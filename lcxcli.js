@@ -6,11 +6,11 @@ var REMOTEHOST=process.argv[4]
 var REMOTEPORT=parseInt(process.argv[5])
 
 var linksock=new net.Socket();
-linksock.connect(REMOTEPORT,REMOTEHOST,()=>{
+linksock.connect(REMOTEPORT,REMOTEHOST,function(){
     console.log('linksock established');
 })
 
-linksock.on('data',(data)=>{
+linksock.on('data',function(data){
     if(data.toString().substr(0,7)!='connect'){
         linksock.end();
     }
@@ -19,31 +19,31 @@ linksock.on('data',(data)=>{
     var forwardsock=new net.Socket();
     var info=Buffer(1);
     info[0]=linkid;
-    transfersock.connect(REMOTEPORT,REMOTEHOST,()=>{
+    transfersock.connect(REMOTEPORT,REMOTEHOST,function(){
         console.log('begin a transfer');
         transfersock.write(Buffer('connect')+info);
     })
-    forwardsock.connect(LOCALPORT,LOCALHOST,()=>{
+    forwardsock.connect(LOCALPORT,LOCALHOST,function(){
         console.log('begin forward socket');
     })
-    transfersock.on('error',(err)=>{
+    transfersock.on('error',function(err){
         console.log('error accured during transfer:'+err.message);
         forwardsock.end();
     })
-    forwardsock.on('error',(err)=>{
+    forwardsock.on('error',function(err){
         console.log('error accured linking to forward:'+err.message);
         transfersock.end();
     })
-    transfersock.on('data',(data)=>{
+    transfersock.on('data',function(data){
         forwardsock.write(data);
     })
-    forwardsock.on('data',(data)=>{
+    forwardsock.on('data',function(data){
         transfersock.write(data);
     })
-    transfersock.on('end',(data)=>{
+    transfersock.on('end',function(data){
         forwardsock.end();
     })
-    forwardsock.on('end',(data)=>{
+    forwardsock.on('end',function(data){
         transfersock.end();
     })
 })

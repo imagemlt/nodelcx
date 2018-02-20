@@ -71,7 +71,7 @@ var linkhost = net.createServer(function (sock) {
             if (!sock.established) {
                 if (data.toString().substr(0, 7) == 'connect') {
                     var key = data[7];
-                    if (sockpairs[key] && sockpairs[key].left!=null && sockpairs[key].right!=null) {
+                    if (sockpairs[key] && sockpairs[key].left!=null && sockpairs[key].right==null) {
                         sock.established=true;
                         sockpairs[key].right = sock;
                         sockpairs[key].left.on('data', function (data) {

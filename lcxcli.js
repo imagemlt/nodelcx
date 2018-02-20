@@ -7,10 +7,10 @@ var REMOTEPORT=parseInt(process.argv[5])
 
 var linksock=new net.Socket();
 linksock.on('error',function(err){
-	console.log('error accured:'+err.message);
+	console.error('[-]error accured:'+err.message);
 })
 linksock.connect(REMOTEPORT,REMOTEHOST,function(){
-    console.log('linksock established');
+    console.log('[+]linksock established');
 })
 
 linksock.on('data',function(data){
@@ -23,18 +23,18 @@ linksock.on('data',function(data){
     var info=Buffer(1);
     info[0]=linkid;
     transfersock.connect(REMOTEPORT,REMOTEHOST,function(){
-        console.log('begin a transfer');
+        console.log('[+]begin a transfer');
         transfersock.write(Buffer('connect')+info);
     })
     forwardsock.connect(LOCALPORT,LOCALHOST,function(){
-        console.log('begin forward socket');
+        console.log('[+]begin forward socket');
     })
     transfersock.on('error',function(err){
-        console.log('error accured during transfer:'+err.message);
+        console.error('[-]error accured during transfer:'+err.message);
         forwardsock.end();
     })
     forwardsock.on('error',function(err){
-        console.log('error accured linking to forward:'+err.message);
+        console.error('[-]error accured linking to forward:'+err.message);
         transfersock.end();
     })
     transfersock.on('data',function(data){
@@ -51,4 +51,4 @@ linksock.on('data',function(data){
     })
 })
 
-console.log('begin forward!!!')
+console.log('[+]begin forward!!!')

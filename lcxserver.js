@@ -110,4 +110,4 @@ remotehost.listen(REMOTEPORT, REMOTEHOST);
 linkhost.listen(LOCALPORT, LOCALHOST);
 console.log('forward started on ' + LOCALHOST + ':' + LOCALPORT + ' to ' + REMOTEHOST + ':' + REMOTEPORT)
 
-setInterval(function(){return console.log(sockpairs)},1000)
+

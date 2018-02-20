@@ -6,6 +6,9 @@ var REMOTEHOST=process.argv[4]
 var REMOTEPORT=parseInt(process.argv[5])
 
 var linksock=new net.Socket();
+linksock.on('error',function(err){
+	console.log('error accured:'+err.message);
+})
 linksock.connect(REMOTEPORT,REMOTEHOST,function(){
     console.log('linksock established');
 })

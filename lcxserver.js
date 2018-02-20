@@ -39,20 +39,20 @@ var remotehost = net.createServer(function (sock) {
 
 var linkhost = net.createServer(function (sock) {
     if (linksock == null) {
-        console.log('ddsend link request');
+        console.log('[+]recieved link request');
         linksock = sock;
         sock.on('error', function (err) {
-            console.log('error accured on linksock:' + err.message)
+            console.error('[-]error accured on linksock:' + err.message)
             linksock = null
         })
         sock.on('end', function (data) {
-            console.log('linksock ended');
+            console.log('[-]linksock ended');
             linksock = null
         })
     }
     else {
         sock.on('error', function (err) {
-            console.log('error accured during a transfer:' + err.message);
+            console.error('[-]error accured during a transfer:' + err.message);
             for (var key in sockpairs) {
                 if (sockpairs[key].right == sock) {
                     if (sockpairs[key].left != null)
@@ -89,7 +89,7 @@ var linkhost = net.createServer(function (sock) {
                             sock.end();
                         })
                         sockpairs[key].left.on('error', function (err) {
-                            console.log('error accured:' + err.message);
+                            console.error('[-]error accured:' + err.message);
                             sock.end();
                         })
                     }
@@ -116,4 +116,4 @@ var linkhost = net.createServer(function (sock) {
 
 remotehost.listen(REMOTEPORT, REMOTEHOST);
 linkhost.listen(LOCALPORT, LOCALHOST);
-console.log('forward started on ' + LOCALHOST + ':' + LOCALPORT + ' to ' + REMOTEHOST + ':' + REMOTEPORT)
+console.log('[+]forward started on ' + LOCALHOST + ':' + LOCALPORT + ' to ' + REMOTEHOST + ':' + REMOTEPORT)

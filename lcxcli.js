@@ -25,7 +25,7 @@ linksock.on('data',function(data){
     transfersock.connect(REMOTEPORT,REMOTEHOST,function(){
         console.log('[+]begin a transfer');
         transfersock.write(Buffer('connect')+info);
-        console.log('transfer data sended')
+        console.log('[+]transfer data sended')
         forwardsock.connect(LOCALPORT,LOCALHOST,function(){
             console.log('[+]begin forward socket');
         })

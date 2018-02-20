@@ -25,9 +25,10 @@ linksock.on('data',function(data){
     transfersock.connect(REMOTEPORT,REMOTEHOST,function(){
         console.log('[+]begin a transfer');
         transfersock.write(Buffer('connect')+info);
-    })
-    forwardsock.connect(LOCALPORT,LOCALHOST,function(){
-        console.log('[+]begin forward socket');
+        console.log('transfer data sended')
+        forwardsock.connect(LOCALPORT,LOCALHOST,function(){
+            console.log('[+]begin forward socket');
+        })
     })
     transfersock.on('error',function(err){
         console.error('[-]error accured during transfer:'+err.message);
@@ -41,12 +42,14 @@ linksock.on('data',function(data){
         forwardsock.write(data);
     })
     forwardsock.on('data',function(data){
-        transfersock.write(data);
+        transfersock.write(data)
     })
     transfersock.on('end',function(data){
+        console.log('[-]remote client ended transfer')
         forwardsock.end();
     })
     forwardsock.on('end',function(data){
+        console.log('[-]local server ended transfer')
         transfersock.end();
     })
 })
